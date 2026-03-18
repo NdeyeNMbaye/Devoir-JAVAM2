@@ -9,6 +9,6 @@ public class ProduitsDto {
 
     private String ref;
     private String name;
-    private double stock;
+    private Double stock;
     private UserAccountDto user;
 }

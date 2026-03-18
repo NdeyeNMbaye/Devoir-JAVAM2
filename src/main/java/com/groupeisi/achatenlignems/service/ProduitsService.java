@@ -9,7 +9,9 @@ import com.groupeisi.achatenlignems.repository.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +32,7 @@ public class ProduitsService {
                 .map(produitsMapper::toDto)
                 .collect(Collectors.toList());
     }
-
+    @Cacheable(value = "produits", key = "#ref")
     public ProduitsDto findById(String ref) {
         log.info("Récupération du produit avec la ref : {}", ref);
         return produitsRepository.findById(ref)
@@ -48,7 +50,7 @@ public class ProduitsService {
         }
         return produitsMapper.toDto(produitsRepository.save(produits));
     }
-
+    @CachePut(value = "produits", key = "#ref")
     public ProduitsDto update(String ref, ProduitsDto produitsDto) {
         log.info("Mise à jour du produit avec la ref : {}", ref);
         produitsRepository.findById(ref)
@@ -57,7 +59,7 @@ public class ProduitsService {
         produits.setRef(ref);
         return produitsMapper.toDto(produitsRepository.save(produits));
     }
-
+    @CacheEvict(value = "produits", key = "#ref")
     public void delete(String ref) {
         log.info("Suppression du produit avec la ref : {}", ref);
         produitsRepository.findById(ref)

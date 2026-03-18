@@ -7,6 +7,9 @@ import com.groupeisi.achatenlignems.repository.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,7 +29,7 @@ public class UserAccountService {
                 .map(userAccountMapper::toDto)
                 .collect(Collectors.toList());
     }
-
+    @Cacheable(value = "users", key = "#id")
     public UserAccountDto findById(Long id) {
         log.info("Récupération de l'utilisateur avec l'id : {}", id);
         return userAccountRepository.findById(id)
@@ -40,7 +43,7 @@ public class UserAccountService {
         userAccount.setId(null);
         return userAccountMapper.toDto(userAccountRepository.save(userAccount));
     }
-
+    @CachePut(value = "users", key = "#id")
     public UserAccountDto update(Long id, UserAccountDto userAccountDto) {
         log.info("Mise à jour de l'utilisateur avec l'id : {}", id);
         userAccountRepository.findById(id)
@@ -49,7 +52,7 @@ public class UserAccountService {
         userAccount.setId(id);
         return userAccountMapper.toDto(userAccountRepository.save(userAccount));
     }
-
+    @CacheEvict(value = "users", key = "#id")
     public void delete(Long id) {
         log.info("Suppression de l'utilisateur avec l'id : {}", id);
         userAccountRepository.findById(id)

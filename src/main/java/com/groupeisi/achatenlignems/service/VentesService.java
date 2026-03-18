@@ -7,7 +7,9 @@ import com.groupeisi.achatenlignems.repository.VentesRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +28,7 @@ public class VentesService {
                 .map(ventesMapper::toDto)
                 .collect(Collectors.toList());
     }
-
+    @Cacheable(value = "ventes", key = "#id")
     public VentesDto findById(Long id) {
         log.info("Récupération de la vente avec l'id : {}", id);
         return ventesRepository.findById(id)
@@ -40,7 +42,7 @@ public class VentesService {
         ventes.setId(null);
         return ventesMapper.toDto(ventesRepository.save(ventes));
     }
-
+    @CachePut(value = "ventes", key = "#id")
     public VentesDto update(Long id, VentesDto ventesDto) {
         log.info("Mise à jour de la vente avec l'id : {}", id);
         ventesRepository.findById(id)
@@ -49,7 +51,7 @@ public class VentesService {
         ventes.setId(id);
         return ventesMapper.toDto(ventesRepository.save(ventes));
     }
-
+    @CacheEvict(value = "ventes", key = "#id")
     public void delete(Long id) {
         log.info("Suppression de la vente avec l'id : {}", id);
         ventesRepository.findById(id)

@@ -11,7 +11,7 @@ public class VentesDto {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
     private Date dateP;
-    private double quantity;
+    private Double quantity;
     private ProduitsDto product;
     private UserAccountDto user;
 }
