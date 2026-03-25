@@ -134,6 +134,32 @@ Swagger UI
 
 <img width="511" height="887" alt="image" src="https://github.com/user-attachments/assets/4922a77c-5412-4da6-b3cb-2c45c68afc77" />
 
+### Authentification JWT
+
+L'API est sécurisée avec JWT (JSON Web Token). Chaque requête protégée 
+nécessite un token valide dans le header Authorization.
+
+### Obtenir un token (Postman)
+
+<img width="1914" height="994" alt="image" src="https://github.com/user-attachments/assets/c7455ef7-237b-4c26-b0e4-aa561f727b36" />
+
+### Utiliser le token dans Swagger
+
+1. Copier le token retourné par Postman
+2. Ouvrir Swagger UI : `http://localhost:8015/swagger-ui/index.html`
+3. Cliquer sur le bouton **Authorize 🔒** en haut à droite
+4. Saisir dans le champ Value :
+
+<img width="855" height="348" alt="image" src="https://github.com/user-attachments/assets/dcea18d9-c2eb-40b4-9b22-3be79eaff5bf" />
+
+### Résultat
+
+- Avec token valide → `200 OK`
+- Sans token → `401 Unauthorized`
+Et on pourra continuer a faie correctment les cruds
+
+
+
 
 
 
